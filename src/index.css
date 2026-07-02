@@ -109,3 +109,33 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+.card {
+    padding: 20px;
+    width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #f1e4ea;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    transition: 0.2s ease;
+    cursor: pointer;
+
+  
+}
+
+
+.card-content {
+    padding: 18px;
+}
+
+.results{
+    padding: 20px;
+    width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #f1e4ea;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    transition: 0.2s ease;
+    cursor: pointer;
+}

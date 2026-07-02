@@ -3,49 +3,78 @@ import React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 
-function App() {
-  const [funFact, setFunFact] = useState(""); //creates a blank string
-  const [data, setData] =  useState([]); //creates an empty list box
-  const searchDogFunFact = () => {
-    fetch(`https://random-words-api.kushcreates.com/api?language=en&category=animals&words=${funFact}`) //fetches the data from the api  
-      .then((response => response.json()))
-      .then((result) => {
-        // 2. This is where we handle the data!
-        console.trace("Debugging User Profile Fetch"); 
-        console.log("API Data:", result); // PLEASE LOG YOUR DATA HERE. //fetches the sata  
-        // Let's actually save the fact into our state so we can see it
-        //const fact = data.data[0].attributes.body;
-        setData(result.firstletter); //gets that property fact 
-       // console.log("Current state (funFact):", funFact);
-      })
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import "./index.css";
 
-      // this error function is pretty standard so I will leave this here
-      .catch((error) => console.error(error));
+function App() {
+  const [data, setData] = useState([]); // stores the list of words from the API
+  const [loading, setLoading] = useState(false); //tracks/checks if api is loading 
+
+  // dynamic function that takes a category string as a parameter
+  const fetchCategoryData = (category) => {
+    setLoading(true);
+    // we are dynamically insert the category into the API URL using template literals
+    fetch(`https://random-words-api.kushcreates.com/api?language=en&category=${category}&words=5`)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(`API Data for ${category}:`, result); 
+        setData(result); 
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(`Error fetching ${category}:`, error);
+        setLoading(false);
+      });
   };
     console.log(data);
   
   return (
     <>
-    <TextField
-      id="outlined-controlled"
-      label="Search"
-      value={funFact}
-      onChange={(event) => {//a controlled component. Text box immediatly grabs user input and updates it state
-        // empty for now
-        setFunFact(event.target.value); //this is the state that is being updated with the user input
-       // setName(event.target.value);
-        // console.log(event.target.value);
-      }}
-    />
-    <Button onClick={searchDogFunFact}> Brain Rot </Button>
-    <Button onClick={searchDogFunFact}> Birds </Button>
-    <Button onClick={searchDogFunFact}> Animals </Button>
-    <Button onClick={searchDogFunFact}> Sports </Button>
-    <Button onClick={searchDogFunFact}> Games </Button>
-    <Button onClick={searchDogFunFact}> Companies </Button>
+  <div className= "card">
+      <div className= "card-content">
+
+        <div style={{ padding: "20px" }}>
+          <h1>Not the Word</h1>
+          {/* Category Buttons passing their specific value to the function */}
+          <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+            {/* CRITICAL: We use an arrow function inside onClick so it doesn't fire immediately on page load */}
+            <Button variant="contained" onClick={() => fetchCategoryData("brainrot")}> Brain Rot </Button>
+            <Button variant="contained" onClick={() => fetchCategoryData("birds")}> Birds </Button>
+            <Button variant="contained" onClick={() => fetchCategoryData("animals")}> Animals </Button>
+            <Button variant="contained" onClick={() => fetchCategoryData("sports")}> Sports </Button>
+            <Button variant="contained" onClick={() => fetchCategoryData("games")}> Games </Button>
+            <Button variant="contained" onClick={() => fetchCategoryData("companies")}> Companies </Button>
+          </div>
 
 
+          <FormGroup>
+            <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
+          </FormGroup>
 
+
+          <div className="results">
+            <h3>Results:</h3>
+            {loading ? (
+              <p>Loading new words...</p>
+            ) : data.length > 0 ? (
+              <ul>
+                {data.map((item, index) => (
+                  <li key={index} style={{ marginBottom: "10px" }}>
+                    <strong>{item.word}</strong> 
+                    {/* //{item.definition} */}
+                  </li>
+                  
+                ))}
+              </ul>
+            ) : (
+              <p>Click any category above to load words!</p>
+            )}
+          </div>
+    </div>
+    </div>
+</div>
 
     </>
   );
