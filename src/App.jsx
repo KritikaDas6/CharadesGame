@@ -23,7 +23,7 @@ function App() {
   const [checkedWords, setCheckedWords] = useState({}); 
   
   const [isSwitchingPlayers, setIsSwitchingPlayers] = useState(false);
-  const [switchCount, setSwitchCount] = useState(5); 
+  const [switchCount, setSwitchCount] = useState(10); 
   const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function App() {
       const systemTimer = setTimeout(() => { 
         setIsCounting(false);
         setCount(3);
-        setGameTimer(30); // changed to 15 bc teacher said 20 too long
+        setGameTimer(45); // changed to 15 bc ppl said 20 too long
         setCheckedWords({}); 
         setHasStarted(true); 
       }, 1000);
@@ -76,13 +76,13 @@ function App() {
           
           if (currentPlayer === 1) {
             setIsSwitchingPlayers(true);
-            setSwitchCount(5);
+            setSwitchCount(10);
           } else {
             if (currentRound < 2) {
               setCurrentRound(2);
               setCurrentPlayer(1); 
               setIsSwitchingPlayers(true);
-              setSwitchCount(5);
+              setSwitchCount(10);
             } else {
               setIsGameOver(true); // game over man game over
             }
