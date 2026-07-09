@@ -35,7 +35,7 @@ function App() {
       const systemTimer = setTimeout(() => { 
         setIsCounting(false);
         setCount(3);
-        setGameTimer(45); // changed to 15 bc ppl said 20 too long
+        setGameTimer(45); // changed to 15 bc  said 20 too long
         setCheckedWords({}); 
         setHasStarted(true); 
       }, 1000);
@@ -176,7 +176,7 @@ function App() {
     let totalChecked = 0;
     if (nextWords[0]) { totalChecked = totalChecked + 1; }
     if (nextWords[1]) { totalChecked = totalChecked + 1; }
-    if (nextWords[2]) { totalChecked = totalChecked + 1; }
+      if (nextWords[2]) { totalChecked = totalChecked + 1; }
     if (nextWords[3]) { totalChecked = totalChecked + 1; }
     if (nextWords[4]) { totalChecked = totalChecked + 1; }
 
@@ -192,7 +192,7 @@ function App() {
     setData([]);
     setP1Score(0);
     setP2Score(0);
-    setCurrentRound(1);
+      setCurrentRound(1);
     setCurrentPlayer(1);
   };
   
