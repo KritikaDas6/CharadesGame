@@ -17,7 +17,8 @@ function App() {
   const [gameTimer, setGameTimer] = useState(5); 
 
   const [currentPlayer, setCurrentPlayer] = useState(1); 
-  const [currentRound, setCurrentRound] = useState(1); 
+  // const [currentRound, setCurrentRound] = useState(1); 
+  const [turnNumber, setTurnNumber] = useState(1);
   const [p1Score, setP1Score] = useState(0); 
   const [p2Score, setP2Score] = useState(0); 
   const [checkedWords, setCheckedWords] = useState({}); 
@@ -70,27 +71,23 @@ function App() {
       setIsGameOver(true);
     }
     if (hasStarted) {
-      if (gameTimer === 0) {
-        if (!isGameOver) {
-          setHasStarted(false); 
-          
-          if (currentPlayer === 1) {
-            setIsSwitchingPlayers(true);
-            setSwitchCount(10);
-          } else {
-            if (currentRound < 2) {
-              setCurrentRound(2);
-              setCurrentPlayer(1); 
-              setIsSwitchingPlayers(true);
-              setSwitchCount(10);
-            } else {
-              setIsGameOver(true); // game over man game over
-            }
-          }
+    if (gameTimer === 0) {
+      if (!isGameOver) {
+        setHasStarted(false); 
+        
+        if (turnNumber < 4) {
+          // 4 turns not completed make sure to keeep playing
+          setTurnNumber(turnNumber + 1);
+          setIsSwitchingPlayers(true);
+          setSwitchCount(10);
+        } else {
+      
+          setIsGameOver(true);  //turn 4 ended game over
         }
       }
     }
-  }, [gameTimer, hasStarted, currentPlayer, currentRound, isGameOver]);
+  }
+}, [gameTimer, hasStarted, turnNumber, isGameOver]);
 
   useEffect(() => { // next player overlaying stuff
 
@@ -249,12 +246,15 @@ function App() {
     );
   } else {
     let headerText = null;
+    const displayRound = turnNumber <= 2 ? 1 : 2;
+    const displayPlayer = turnNumber % 2 === 1 ? 1 : 2;
+
     if (isGameOver) {
       headerText = <h2 className="category-header" style={{ color: '#a32a2a' }}>GAME OVER!</h2>;
     } else {
       headerText = (
         <h2 className="category-header">
-          ROUND {currentRound} - PLAYER {currentPlayer}'S TURN
+          ROUND {displayRound} - PLAYER {displayPlayer}'S TURN
         </h2>
       );
     }
@@ -282,7 +282,7 @@ function App() {
 
     let resultsSection = null;
     if (loading) {
-      resultsSection = <p>Loading new words...</p>;
+      resultsSection = <p>Loading words...</p>;
     } else if (isGameOver) {
       let winAnnounce = "";
       if (p1Score === p2Score) {
